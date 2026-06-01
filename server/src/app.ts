@@ -9,4 +9,12 @@ const app = express();
 app.use(cors()); // Allows my React frontend to talk to my Express backend
 app.use(express.json()); // Parsing the incoming json before reaching any routes
 
+
+// Routes
+app.get('/', (req, res) => {
+    res.json({
+        message: "The Arcane Script API"
+    });
+})
+
 export default app;
