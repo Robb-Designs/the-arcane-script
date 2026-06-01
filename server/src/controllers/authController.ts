@@ -1,8 +1,8 @@
 // Responsible for handling registry, login, JWT logic
 //Handle auth requests
 
-import User from "../models/User";
-import { Request, Response } from "express";
+import User from '../models/User';
+import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 
 
@@ -32,9 +32,19 @@ async function registerUser(req: Request, res: Response) {
         // Create user, hash password, and return success 
         const salt = await bcrypt.genSalt(12);
         const hashedPassword = await bcrypt.hash(password, salt);
-        //User.create(); Placeholder for later
-    } catch {
+        const user = await User.create({
+            username: username,
+            email: email,
+            password: hashedPassword
+        });
 
+        return res.status(201).json({ message: "Registration Successful!" })
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
     }
 }
 
