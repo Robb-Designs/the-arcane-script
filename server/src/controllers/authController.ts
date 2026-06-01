@@ -3,6 +3,7 @@
 
 import User from "../models/User";
 import { Request, Response } from "express";
+import bcrypt from 'bcrypt';
 
 
 // Handle user signup request
@@ -29,6 +30,8 @@ async function registerUser(req: Request, res: Response) {
         }
 
         // Create user, hash password, and return success 
+        const salt = await bcrypt.genSalt(12);
+        const hashedPassword = await bcrypt.hash(password, salt);
         //User.create(); Placeholder for later
     } catch {
 
