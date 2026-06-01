@@ -1,0 +1,1 @@
+// Battle result endpoints

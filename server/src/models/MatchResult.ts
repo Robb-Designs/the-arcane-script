@@ -1,0 +1,1 @@
+// Responsible for defining the battle result model blueprint

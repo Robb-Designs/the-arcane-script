@@ -1,0 +1,1 @@
+// Responsible for defining the user model blueprint
