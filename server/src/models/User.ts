@@ -2,9 +2,9 @@
 import mongoose from "mongoose";
 
 interface IUser {
-    username: string,
-    email: string,
-    password: string,
+    username: string;
+    email: string;
+    password: string;
     wins: number;
     losses: number;
     totalMatches: number;
