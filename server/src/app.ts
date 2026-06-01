@@ -2,9 +2,11 @@
 
 // Dependencies
 import express from 'express';
+import cors from 'cors';
 const app = express();
 
 // MidddleWare
-app.use(express.json()); //parsing the incoming json before reaching any routes
+app.use(cors); // Allows my React frontend to talk to my Express backend
+app.use(express.json()); // Parsing the incoming json before reaching any routes
 
 export default app;
