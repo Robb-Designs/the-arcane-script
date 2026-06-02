@@ -12,7 +12,7 @@ interface AuthRequest extends Request {
 
 function tokenAuth(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-         // Read the Authorization header: "Bearer <token>"
+        // Read the Authorization header: "Bearer <token>"
         const authHeader = req.header('Authorization');
         if (!authHeader) {
             res.status(401).json({
@@ -37,7 +37,8 @@ function tokenAuth(req: AuthRequest, res: Response, next: NextFunction) {
 
         next();
 
-    } catch {
-
+    } catch (error) {
+        console.error(error);
+        res.status(401).json({ message: "Invalid token" });
     }
 }
