@@ -9,3 +9,18 @@ interface IMatch {
     accuracy: number;
     completedAt: Date
 };
+
+const matchSchema = new mongoose.Schema<IMatch>({
+    playerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },// Stores a reference to the User collection for lookups/population
+    result: { type: String, enum: ["win", "loss"], required: true },
+    wpm: { type: Number, default: 0, required: true },
+    accuracy: { type: Number, default: 0, required: true },
+    completedAt: { type: Date, default: Date.now }
+   
+}, {
+    timestamps: true
+});
+
+const Match = mongoose.model<IMatch>('Match', matchSchema);
+
+export default Match;
