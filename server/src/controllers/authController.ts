@@ -109,10 +109,41 @@ async function loginUser(req: Request, res: Response) {
 
 }
 
-function getCurrentUser(req: AuthRequest, res: Response) {
-    return res.status(200).json({
-        user: req.user
-    });
+async function getCurrentUser(req: AuthRequest, res: Response) {
+    try {
+        // Read authenticated user id set earlier by tokenAuth middleware
+        const userId = req.user?.userId;
+        if (!userId) {
+            return res.status(401).json({
+                message: "Unauthorized/ Missing Credentials"
+            })
+        }
+        // Query database for the currently authenticated user
+        const foundUser = await User.findById(userId)
+        if (!foundUser) {
+            return res.status(404).json({
+                message: "Unable to find user"
+            })
+        }
+        // Return profile data (exclude password and sensitive info)
+        return res.status(200).json({
+            id: foundUser._id,
+            username: foundUser.username,
+            email: foundUser.email,
+            wins: foundUser.wins,
+            losses: foundUser.losses,
+            totalMatches: foundUser.totalMatches,
+            averageAccuracy: foundUser.averageAccuracy,
+            highestWpm: foundUser.highestWpm
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Error getting user: Internal Server Error"
+        });
+    }
+
 }
 
 export { registerUser, loginUser, getCurrentUser };
