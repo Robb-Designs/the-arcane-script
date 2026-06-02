@@ -4,6 +4,7 @@
 import User from '../models/User';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 
 // reates a new account after validating required fields and checking for existing email or username
@@ -74,8 +75,26 @@ async function loginUser(req: Request, res: Response) {
             });
             return;
         }
+        // Checking if secret key exist
+        if (!process.env.JWT_SECRET) {
+            throw new Error("Signature is missing");
+        }
 
-        return res.status(200).json({ message: "Login Successful!" });
+        // Creating jwt for login memory
+        const token = jwt.sign(
+            { userId: user._id, },
+            process.env.JWT_SECRET,
+            { expiresIn: '3d' }
+        );
+
+        return res.status(200).json({
+            token,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email
+            }
+        });
 
     } catch (error) {
         console.error(error);
@@ -87,4 +106,4 @@ async function loginUser(req: Request, res: Response) {
 
 }
 
-export {registerUser, loginUser};
+export { registerUser, loginUser };
