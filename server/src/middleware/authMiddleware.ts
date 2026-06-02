@@ -9,16 +9,16 @@ function tokenAuth(req: AuthRequest, res: Response, next: NextFunction) {
         // Read the Authorization header: "Bearer <token>"
         const authHeader = req.header('Authorization');
         if (!authHeader) {
-            res.status(401).json({
+            return res.status(401).json({
                 message: "Invalid/Missing credentials"
             });
-            return;
+            
         }
         // Split header into scheme and token, then validate format
         const [scheme, token] = authHeader.split(" ");
         if (scheme !== "Bearer" || !token) {
-            res.status(401).json({ message: "Invalid/Missing credentials" });
-            return;
+            return res.status(401).json({ message: "Invalid/Missing credentials" });
+            
         }
         // Use server-side secret to verify signature and token
         const secret = process.env.JWT_SECRET;
@@ -33,7 +33,7 @@ function tokenAuth(req: AuthRequest, res: Response, next: NextFunction) {
 
     } catch (error) {
         console.error(error);
-        res.status(401).json({ message: "Invalid token" });
+        return res.status(401).json({ message: "Invalid token" });
     }
 }
 
