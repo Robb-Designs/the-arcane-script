@@ -23,7 +23,7 @@ async function registerUser(req: Request, res: Response) {
 
         if (existingUser) {
             res.status(400).json({
-                message: 'User already exist'
+                message: 'User already exists'
             });
             return;
         }
@@ -86,3 +86,5 @@ async function loginUser(req: Request, res: Response) {
     }
 
 }
+
+export {registerUser, loginUser};
