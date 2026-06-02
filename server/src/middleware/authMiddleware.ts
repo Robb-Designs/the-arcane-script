@@ -10,9 +10,21 @@ interface AuthRequest extends Request {
     };
 }
 
-function tokenAuth(req: AuthRequest, res: Response, next: NextFunction){
+function tokenAuth(req: AuthRequest, res: Response, next: NextFunction) {
     try {
+        const authHeader = req.header('Authorization');
+        if (!authHeader) {
+            res.status(401).json({
+                message: "Invalid/Missing credentials"
+            });
+            return;
+        }
 
+        const [scheme, token] = authHeader.split(" ");
+        if (scheme !== "Bearer" || !token) {
+            res.status(401).json({ message: "Invalid/Missing credentials" });
+            return;
+        }
     } catch {
 
     }
