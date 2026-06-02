@@ -38,7 +38,7 @@ async function createMatch(req: AuthRequest, res: Response) {
         result === 'win' ? RUser.wins++ : RUser.losses++;
         RUser.totalMatches++;
 
-        if (wpm >   RUser.highestWpm) {
+        if (wpm > RUser.highestWpm) {
             RUser.highestWpm = wpm;
         }
 
@@ -57,4 +57,22 @@ async function createMatch(req: AuthRequest, res: Response) {
     }
 }
 
-export default createMatch;
+async function getMatchHistory(req: AuthRequest, res: Response) {
+    try {
+        const playerId = req.user?.userId;
+        if (!playerId) {
+            return res.status(401).json({ message: "Match History Error: Invalid/Missing Credentials" });
+        }
+
+        const matches = await Match.find({ playerId }).sort({ createdAt: -1 });
+        return res.status(200).json(matches);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Match History Error: Internal Server Error"
+        });
+    }
+}
+
+export { createMatch, getMatchHistory };
