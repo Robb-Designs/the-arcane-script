@@ -31,3 +31,5 @@ async function createMatch(req: AuthRequest, res: Response) {
         });
     }
 }
+
+export default createMatch;
