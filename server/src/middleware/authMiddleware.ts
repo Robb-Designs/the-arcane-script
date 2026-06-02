@@ -2,13 +2,7 @@
 // Dependencies
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-
-// Define interface structure for token payload
-interface AuthRequest extends Request {
-    user?: {
-        userId: string;
-    };
-}
+import AuthRequest from '../types/AuthRequest';
 
 function tokenAuth(req: AuthRequest, res: Response, next: NextFunction) {
     try {
