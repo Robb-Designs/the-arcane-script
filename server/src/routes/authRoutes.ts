@@ -5,7 +5,8 @@
 
 import { Router } from 'express';
 const router = Router()
-import {registerUser, loginUser} from '../controllers/authController'
+import { registerUser, loginUser, getCurrentUser } from '../controllers/authController'
+import tokenAuth from '../middleware/authMiddleware';
 
 
 //Routes
@@ -15,4 +16,10 @@ router.post('/register', registerUser)
 // Verifies credentials and returns an auth token (JWT) on success.
 router.post('/login', loginUser)
 
+// Test protected route
+router.get('/me', tokenAuth, getCurrentUser);
+
 export default router;
+
+
+
