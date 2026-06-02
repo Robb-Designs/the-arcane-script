@@ -50,6 +50,31 @@ async function registerUser(req: Request, res: Response) {
 
 async function loginUser(req: Request, res: Response) {
     try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            res.status(400).json({
+                message: "Request Error: Account details missing"
+            });
+            return;
+        }
+
+        const user = await User.findOne({ email })
+        if (!user) {
+            res.status(401).json({
+                message: "Invalid credentials"
+            });
+            return;
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            res.status(401).json({
+                message: "Invalid credentials"
+            });
+            return;
+        }
 
     } catch {
 
