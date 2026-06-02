@@ -3,11 +3,12 @@
 
 import User from '../models/User';
 import { Request, Response } from 'express';
+import AuthRequest from '../types/AuthRequest';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 
-// reates a new account after validating required fields and checking for existing email or username
+// creates a new account after validating required fields and checking for existing email or username
 async function registerUser(req: Request, res: Response) {
     try {
         const { username, email, password } = req.body;
@@ -108,4 +109,10 @@ async function loginUser(req: Request, res: Response) {
 
 }
 
-export { registerUser, loginUser };
+function getCurrentUser(req: AuthRequest, res: Response) {
+    return res.status(200).json({
+        user: req.user
+    });
+}
+
+export { registerUser, loginUser, getCurrentUser };
