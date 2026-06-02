@@ -10,3 +10,10 @@ interface AuthRequest extends Request {
     };
 }
 
+function tokenAuth(req: AuthRequest, res: Response, next: NextFunction){
+    try {
+
+    } catch {
+
+    }
+}
