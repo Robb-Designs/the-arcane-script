@@ -52,6 +52,7 @@ async function loginUser(req: Request, res: Response) {
     try {
         const { email, password } = req.body;
 
+        // Reject incomplete login requests
         if (!email || !password) {
             res.status(400).json({
                 message: "Request Error: Account details missing"
@@ -59,6 +60,7 @@ async function loginUser(req: Request, res: Response) {
             return;
         }
 
+        // Look up the user by email before checking the password
         const user = await User.findOne({ email })
         if (!user) {
             res.status(401).json({
@@ -80,7 +82,7 @@ async function loginUser(req: Request, res: Response) {
             throw new Error("Signature is missing");
         }
 
-        // Creating jwt for login memory
+        // Creating jwt for login memory for later reqs
         const token = jwt.sign(
             { userId: user._id, },
             process.env.JWT_SECRET,
