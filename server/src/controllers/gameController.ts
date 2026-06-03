@@ -5,6 +5,7 @@ import Battle from "../models/Battle";
 import { Response } from "express";
 import AuthRequest from "../types/AuthRequest";
 import Enemy from "../models/Enemy";
+import WordPrompt from "../models/WordPrompt";
 
 
 const validDifficulties = [
@@ -53,6 +54,23 @@ async function startBattle(req: AuthRequest, res: Response) {
             });
         }
 
+        const prompts = await WordPrompt.find({
+            arena: enemy.arena,
+            difficulty: enemy.difficulty
+        });
+
+        if (prompts.length === 0) {
+            return res.status(404).json({
+                message: "No prompts found"
+            });
+        };
+
+        const shuffledPrompts = prompts.sort(() => Math.random() - 0.5);
+
+        const battlePrompts = shuffledPrompts.slice(0, 5);
+
+        const promptTexts = battlePrompts.map(prompt => prompt.text);
+
         // Create and store a new battle session for this player/enemy pair.
         const battle = await Battle.create({
             playerId,
@@ -69,8 +87,11 @@ async function startBattle(req: AuthRequest, res: Response) {
                 difficulty: enemy.difficulty,
                 baseWpm: enemy.baseWpm,
                 health: enemy.health,
-                introText: enemy.introText
-            }
+                introText: enemy.introText,
+                arena: enemy.arena
+            },
+
+            prompts: promptTexts
         });
 
     } catch (error) {
