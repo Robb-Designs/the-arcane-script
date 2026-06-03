@@ -15,6 +15,7 @@ const validDifficulties = [
 
 async function startBattle(req: AuthRequest, res: Response) {
     try {
+        // Read the current player and chosen difficulty from the request.
         const playerId = req.user?.userId;
         const { difficulty } = req.body;
 
@@ -31,6 +32,7 @@ async function startBattle(req: AuthRequest, res: Response) {
             });
         }
 
+        // Load enemies that match the selected difficulty tier.
         const enemies = await Enemy.find({
             difficulty: difficulty as 'novice' | 'adept' | 'master'
         });
@@ -51,12 +53,13 @@ async function startBattle(req: AuthRequest, res: Response) {
             });
         }
 
+        // Create and store a new battle session for this player/enemy pair.
         const battle = await Battle.create({
             playerId,
             enemyId: enemy._id
         });
 
-
+        // Return battle id plus enemy info the client needs to render the encounter.
         return res.status(201).json({
             battleId: battle._id,
 
