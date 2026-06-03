@@ -49,6 +49,10 @@ async function createMatch(req: AuthRequest, res: Response) {
         // Single match result document for later stats/history queries.
         const match = await Match.create({
             playerId,
+            battleId: battle._id,
+            enemyId: enemy._id,
+            enemyName: enemy.name,
+            arena: enemy.arena,
             result,
             wpm,
             accuracy

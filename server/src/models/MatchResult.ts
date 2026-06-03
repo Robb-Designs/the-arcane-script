@@ -13,7 +13,7 @@ interface IMatch {
     result: 'win' | 'loss';
     wpm: number;
     accuracy: number;
-    completedAt: Date
+    completedAt: Date;
 };
 
 const matchSchema = new mongoose.Schema<IMatch>({
