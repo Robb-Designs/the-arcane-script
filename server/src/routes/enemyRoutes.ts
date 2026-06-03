@@ -2,10 +2,12 @@
 
 // Dependencies
 import {Router} from 'express';
-import getEnemies from '../controllers/enemyController';
+import {getEnemies, getEnemyByDifficulty} from '../controllers/enemyController';
 const enemyRoutes = Router();
 
 // Routes
 enemyRoutes.get('/', getEnemies);
+
+enemyRoutes.get('/difficulty/:difficulty', getEnemyByDifficulty);
 
 export default enemyRoutes;
