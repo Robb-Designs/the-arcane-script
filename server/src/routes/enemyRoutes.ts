@@ -2,10 +2,10 @@
 
 // Dependencies
 import {Router} from 'express';
-const enemyRouter = Router();
 import getEnemies from '../controllers/enemyController';
+const enemyRoutes = Router();
 
 // Routes
-enemyRouter.get('/enemies', getEnemies);
+enemyRoutes.get('/', getEnemies);
 
-export default enemyRouter;
+export default enemyRoutes;
