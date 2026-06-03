@@ -6,6 +6,7 @@ import { Response } from 'express';
 import AuthRequest from '../types/AuthRequest';
 import User from '../models/User';
 import Battle from '../models/Battle';
+import Enemy from '../models/Enemy';
 
 async function createMatch(req: AuthRequest, res: Response) {
     try {
@@ -40,6 +41,11 @@ async function createMatch(req: AuthRequest, res: Response) {
             });
         }
 
+        const enemy = await Enemy.findById(battle.enemyId);
+        if (!enemy) {
+            return res.status(404).json({ message: 'Battle Error: Enemy Not Found' })
+        }
+
         // Single match result document for later stats/history queries.
         const match = await Match.create({
             playerId,
@@ -47,6 +53,12 @@ async function createMatch(req: AuthRequest, res: Response) {
             wpm,
             accuracy
         });
+
+        battle.status = 'completed';
+
+        await battle.save();
+
+        const resultText = result === 'win' ? enemy.defeatText : enemy.victoryText;
 
         // Load the player document so we can update battle stats.
         const RUser = await User.findById(playerId);
@@ -68,7 +80,8 @@ async function createMatch(req: AuthRequest, res: Response) {
 
         return res.status(201).json({
             message: "Match Saved Successfully!",
-            match: match
+            match: match,
+            resultText
         });
     } catch (error) {
         console.error(error);
