@@ -26,6 +26,12 @@ async function createMatch(req: AuthRequest, res: Response) {
             return res.status(404).json({ message: "Battle Error: Battle Not Found" });
         }
 
+        if (battle.playerId.toString() !== playerId) {
+            return res.status(403).json({
+                message: "Battle Error: Unauthorized Battle Access"
+            });
+        }
+
         // Single match result document for later stats/history queries.
         const match = await Match.create({
             playerId,
