@@ -5,6 +5,7 @@ import Match from '../models/MatchResult';
 import { Response } from 'express';
 import AuthRequest from '../types/AuthRequest';
 import User from '../models/User';
+import Battle from '../models/Battle';
 
 async function createMatch(req: AuthRequest, res: Response) {
     try {
@@ -12,12 +13,18 @@ async function createMatch(req: AuthRequest, res: Response) {
         const playerId = req.user?.userId;
 
         // Expected match payload from client after a battle ends.
-        const { result, wpm, accuracy } = req.body;
+        const { battleId, result, wpm, accuracy } = req.body;
 
         // Guard against unauthenticated requests or incomplete match stats.
-        if (!playerId || !result || wpm === undefined || accuracy === undefined) {
+        if (!battleId || !playerId || !result || wpm === undefined || accuracy === undefined) {
             return res.status(400).json({ message: "Match Result Error: Invalid/Missing Credentials" });
         };
+
+        const battle = await Battle.findById(battleId);
+        if (!battle) {
+            // Token was valid, but the related user record no longer exists.
+            return res.status(404).json({ message: "Battle Error: Battle Not Found" });
+        }
 
         // Single match result document for later stats/history queries.
         const match = await Match.create({
