@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 interface IEnemy {
     name: string;
     difficulty: 'novice' | 'adept' | 'master';
+    arena: string;
     baseWpm: number;
     health: number;
     introText: string;
@@ -19,6 +20,7 @@ interface IEnemy {
 const enemySchema = new mongoose.Schema<IEnemy>({
     name: { type: String, required: true },
     difficulty: { type: String, enum: ['novice', 'adept', 'master'], required: true },
+    arena: {type: String, required: true},
     baseWpm: { type: Number, required: true },
     health: { type: Number, required: true },
     introText: {type: String, required: true},
