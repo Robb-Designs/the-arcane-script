@@ -26,9 +26,17 @@ async function createMatch(req: AuthRequest, res: Response) {
             return res.status(404).json({ message: "Battle Error: Battle Not Found" });
         }
 
+        // Prevent users from submitting results for someone else's battle.
         if (battle.playerId.toString() !== playerId) {
             return res.status(403).json({
                 message: "Battle Error: Unauthorized Battle Access"
+            });
+        }
+
+        // Stop duplicate submissions once this battle has already been finalized.
+        if (battle.status === 'completed') {
+            return res.status(409).json({
+                message: 'Battle Error: Battle Already Completed'
             });
         }
 
