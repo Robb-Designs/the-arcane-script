@@ -1,7 +1,14 @@
 // Imports
 import { useState, useEffect } from "react";
 import { API_BASE_URL } from "@/config/api";
-import { Card, CardContent } from "@/components/ui/8bit/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/8bit/card";
 import profileImage from "@/assets/images/profile-background.webp";
 import playerImage from "@/assets/images/player.png";
 
@@ -77,6 +84,33 @@ function Profile() {
     return <div>No profile found</div>;
   }
 
+  const statCards = [
+    {
+      title: "Wins",
+      description: "Duels won",
+      value: profile.wins,
+      footer: "Keep the streak alive",
+    },
+    {
+      title: "Losses",
+      description: "Duels lost",
+      value: profile.losses,
+      footer: "Learn and return stronger",
+    },
+    {
+      title: "Battles",
+      description: "Total matches",
+      value: profile.totalMatches,
+      footer: "Every match builds mastery",
+    },
+    {
+      title: "Max Wpm",
+      description: "Peak typing speed",
+      value: profile.highestWpm,
+      footer: "Your fastest incantation",
+    },
+  ];
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background */}
@@ -125,43 +159,40 @@ function Profile() {
             </h1>
 
             <div className="grid sm:grid-cols-2 gap-4">
-              <Card className="bg-zinc-900/95">
-                <CardContent className="flex flex-col gap-2">
-                  <p className="text-xs uppercase tracking-widest">Wins</p>
-                  <p className="text-2xl md:text-3xl text-amber-100">{profile.wins}</p>
-                </CardContent>
-              </Card>
+              {statCards.map((stat) => (
+                <Card key={stat.title} className="bg-zinc-900/95">
+                  <CardHeader>
+                    <CardTitle>{stat.title}</CardTitle>
+                    <CardDescription>{stat.description}</CardDescription>
+                  </CardHeader>
 
-              <Card className="bg-zinc-900/95">
-                <CardContent className="flex flex-col gap-2">
-                  <p className="text-xs uppercase tracking-widest">Losses</p>
-                  <p className="text-2xl md:text-3xl text-amber-100">{profile.losses}</p>
-                </CardContent>
-              </Card>
+                  <CardContent>
+                    <p className="text-2xl md:text-3xl text-amber-100">{stat.value}</p>
+                  </CardContent>
 
-              <Card className="bg-zinc-900/95">
-                <CardContent className="flex flex-col gap-2">
-                  <p className="text-xs uppercase tracking-widest">Battles</p>
-                  <p className="text-2xl md:text-3xl text-amber-100">{profile.totalMatches}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-zinc-900/95">
-                <CardContent className="flex flex-col gap-2">
-                  <p className="text-xs uppercase tracking-widest">Max Wpm</p>
-                  <p className="text-2xl md:text-3xl text-amber-100">{profile.highestWpm}</p>
-                </CardContent>
-              </Card>
+                  <CardFooter>
+                    <p className="text-[10px] text-amber-200/80">{stat.footer}</p>
+                  </CardFooter>
+                </Card>
+              ))}
             </div>
           </div>
         </Card>
 
         {/* Match History Placeholder */}
         <Card className="mt-8 bg-black/60">
+          <CardHeader>
+            <CardTitle>Recent Battles</CardTitle>
+            <CardDescription>Your latest arena encounters</CardDescription>
+          </CardHeader>
+
           <CardContent>
-            <h2 className="text-2xl font-bold text-white mb-4">Recent Battles</h2>
             <p className="text-slate-300">Battle history coming soon...</p>
           </CardContent>
+
+          <CardFooter>
+            <p className="text-[10px] text-amber-200/80">Tracking unlocks in the next update</p>
+          </CardFooter>
         </Card>
       </div>
     </div>
