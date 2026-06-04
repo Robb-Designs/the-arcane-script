@@ -27,11 +27,13 @@ function Profile() {
   //   const location = useLocation(); DEBUGGING
   //   console.log("Current Path:", location.pathname); DEBUGGING
 
+  // Local page state for profile payload + request status.
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    // Fetch the logged-in user's profile once when the page mounts.
     const fetchProfile = async () => {
       try {
         setIsLoading(true);
@@ -72,6 +74,7 @@ function Profile() {
     fetchProfile();
   }, []);
 
+  // Simple guard returns keep render logic below focused on success UI.
   if (isLoading) {
     return <div>Loading profile...</div>;
   }
@@ -84,6 +87,7 @@ function Profile() {
     return <div>No profile found</div>;
   }
 
+  // Card config used to render the stat grid.
   const statCards = [
     {
       title: "Wins",
@@ -111,6 +115,25 @@ function Profile() {
     },
   ];
 
+  // Quick action cards shown in the guild activity section.
+  const journeyCards = [
+    {
+      title: "Battle Enemies",
+      description: "Challenge arcane foes.",
+      path: "/battle",
+    },
+    {
+      title: "Practice Typing",
+      description: "Improve your WPM.",
+      path: "/practice",
+    },
+    {
+      title: "Leaderboards",
+      description: "Compare your progress.",
+      path: "/leaderboards",
+    },
+  ];
+
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background */}
@@ -129,7 +152,7 @@ function Profile() {
         <Card
           className="
           grid
-          md:grid-cols-[250px_1fr]
+          md:grid-cols-[360px_1fr]
           gap-8
           bg-black/60
           p-6 md:p-8
@@ -167,11 +190,15 @@ function Profile() {
                   </CardHeader>
 
                   <CardContent>
-                    <p className="text-2xl md:text-3xl text-amber-100">{stat.value}</p>
+                    <p className="text-2xl md:text-3xl text-amber-100">
+                      {stat.value}
+                    </p>
                   </CardContent>
 
                   <CardFooter>
-                    <p className="text-[10px] text-amber-200/80">{stat.footer}</p>
+                    <p className="text-[10px] text-amber-200/80">
+                      {stat.footer}
+                    </p>
                   </CardFooter>
                 </Card>
               ))}
@@ -191,8 +218,32 @@ function Profile() {
           </CardContent>
 
           <CardFooter>
-            <p className="text-[10px] text-amber-200/80">Tracking unlocks in the next update</p>
+            <p className="text-[10px] text-amber-200/80">
+              Tracking unlocks in the next update
+            </p>
           </CardFooter>
+        </Card>
+
+        {/* Activity shortcuts for future navigation hooks. */}
+        <Card className="mt-8 bg-black/60">
+          <CardHeader>
+            <CardTitle>Guild Activities</CardTitle>
+            <CardDescription>Choose your next path.</CardDescription>
+          </CardHeader>
+
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-4">
+              {journeyCards.map((card) => (
+                <Card key={card.title} className="cursor-pointer transition-all hover:-translate-y-1 hover:border-amber-600 hover:bg-zinc-900/95">
+                  <CardHeader>
+                    <CardTitle>{card.title}</CardTitle>
+
+                    <CardDescription>{card.description}</CardDescription>
+                  </CardHeader>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
         </Card>
       </div>
     </div>
