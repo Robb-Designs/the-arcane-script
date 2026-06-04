@@ -75,6 +75,12 @@ function Login() {
             onChange={handleChange}
             required
           />
+
+          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Entering Realm..." : "Enter The Realm"}
+          </Button>
         </form>
       </div>
     </div>
