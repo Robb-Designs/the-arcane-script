@@ -37,13 +37,15 @@ function Login() {
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-md flex flex-col gap-6">
-        <h1 className="text-center font-bold text-white text-4xl md:text-5xl">
-          Welcome Back
-        </h1>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-center font-bold text-white text-4xl md:text-5xl">
+            Welcome Back
+          </h1>
 
-        <p className="text-center text-slate-300">
-          Continue your journey through the Arcane Script.
-        </p>
+          <p className="text-center text-slate-300">
+            Continue your journey through the Arcane Script.
+          </p>
+        </div>
 
         <form
           className="
