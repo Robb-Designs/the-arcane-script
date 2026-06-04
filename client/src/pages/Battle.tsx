@@ -4,14 +4,14 @@ import { API_BASE_URL } from "@/config/api";
 
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/8bit/card";
 
-
-
-
+import profileImage from "@/assets/images/profile-background.webp";
 
 function Battle() {
   // Tracks request state while creating a battle session.
@@ -81,34 +81,76 @@ function Battle() {
   };
 
   return (
-    <div className="grid md:grid-cols-3 gap-4">
-      {/* Show server error from last attempt, if any. */}
-      {error && <p className="mb-4 text-red-400">{error}</p>}
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Background */}
+      <img
+        src={profileImage}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+      />
 
-      {/* Small loading note while battle setup request is in flight. */}
-      {isLoading && <p className="mb-4 text-amber-300">Preparing battle...</p>}
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/75" />
 
-      {/* Render one interactive card per difficulty option. */}
-      {difficulties.map((difficulty) => (
-        <Card
-          key={difficulty.value}
-          onClick={() =>
-            startBattle(difficulty.value as "novice" | "adept" | "master")
-          }
-          className="
-        cursor-pointer
-        transition-all
-        hover:-translate-y-1
-        hover:border-amber-400
-      "
-        >
+      {/* Content */}
+      <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
+        <Card className="transition-all hover:-translate-y-1 hover:bg-zinc-900/95">
           <CardHeader>
-            <CardTitle>{difficulty.title}</CardTitle>
+            <CardTitle className="text-4xl">Choose Your Challenge</CardTitle>
 
-            <CardDescription>{difficulty.description}</CardDescription>
+            <CardDescription>
+              Select a difficulty and prepare for battle.
+            </CardDescription>
           </CardHeader>
+
+          <CardContent>
+            {error && <p className="mb-4 text-red-400">{error}</p>}
+
+            {isLoading && (
+              <p className="mb-4 text-amber-300">Preparing battle...</p>
+            )}
+
+            <div className="grid md:grid-cols-3 gap-4">
+              {difficulties.map((difficulty) => (
+                <Card
+                  key={difficulty.value}
+                  onClick={() =>
+                    startBattle(
+                      difficulty.value as "novice" | "adept" | "master",
+                    )
+                  }
+                  className="
+                    cursor-pointer
+                    transition-all
+                    hover:-translate-y-1
+                    hover:border-amber-600
+                    hover:bg-zinc-900/95
+                  "
+                >
+                  <CardHeader>
+                    <CardTitle>{difficulty.title}</CardTitle>
+
+                    <CardDescription>{difficulty.description}</CardDescription>
+                  </CardHeader>
+
+                  <CardFooter>
+                    <p className="text-[10px] text-amber-200/80">
+                      Click to begin
+                    </p>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+
+          <CardFooter>
+            <p className="text-slate-400">
+              Victories increase your standing within the guild and unlock
+              greater challenges.
+            </p>
+          </CardFooter>
         </Card>
-      ))}
+      </div>
     </div>
   );
 }
