@@ -57,7 +57,25 @@ function Login() {
           backdrop-blur-sm
           p-6
         "
-        ></form>
+        >
+          <Input
+            name="email"
+            type="email"
+            value={formData.email}
+            placeholder="Email"
+            onChange={handleChange}
+            required
+          />
+
+          <Input
+            name="password"
+            type="password"
+            value={formData.password}
+            placeholder="Password"
+            onChange={handleChange}
+            required
+          />
+        </form>
       </div>
     </div>
   );
