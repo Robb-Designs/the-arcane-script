@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { API_BASE_URL } from "@/config/api";
 import { Button } from "@/components/ui/8bit/button";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/images/hero-background.webp";
@@ -34,7 +35,7 @@ function Login() {
       setIsLoading(true);
 
       // Send only the fields required by the backend login route.
-      const response = await fetch("/api/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

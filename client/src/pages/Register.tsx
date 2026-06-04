@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { API_BASE_URL } from "@/config/api";
 import { Button } from "@/components/ui/8bit/button";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/images/hero-background.webp";
@@ -39,7 +40,7 @@ function Register() {
     try {
       setIsLoading(true);
       // Send only the fields the backend needs to create the account.
-      const response = await fetch("/api/auth/register", {
+      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
