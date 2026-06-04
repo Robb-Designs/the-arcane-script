@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/8bit/button";
 import { Input } from "@/components/ui/input";
@@ -141,7 +142,10 @@ function Register() {
           </Button>
 
           <p className="text-center text-sm text-slate-300">
-            Already have an account? Login
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-400 hover:text-blue-300">
+              Login
+            </Link>
           </p>
         </form>
       </div>
