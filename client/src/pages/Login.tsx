@@ -23,6 +23,54 @@ function Login() {
     });
   };
 
+  // Submit credentials to the login endpoint and handle auth response.
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Clear old error messages before a new request.
+    setError("");
+    try {
+      setIsLoading(true);
+
+      // Send only the fields required by the backend login route.
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      // Persist auth data so protected screens can use it later.
+      localStorage.setItem("token", data.token);
+
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      setError("");
+
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unexpected error occurred");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
       {/* Background */}
@@ -37,6 +85,7 @@ function Login() {
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-md flex flex-col gap-6">
+        {/* Heading copy above the form card. */}
         <div className="flex flex-col gap-2">
           <h1 className="text-center font-bold text-white text-4xl md:text-5xl">
             Welcome Back
@@ -59,7 +108,9 @@ function Login() {
           backdrop-blur-sm
           p-6
         "
+          onSubmit={handleSubmit}
         >
+          {/* Login inputs */}
           <Input
             name="email"
             type="email"
@@ -83,6 +134,10 @@ function Login() {
           <Button type="submit" disabled={isLoading}>
             {isLoading ? "Entering Realm..." : "Enter The Realm"}
           </Button>
+
+          <p className="text-center text-sm text-slate-300">
+            Don't have an account? Register
+          </p>
         </form>
       </div>
     </div>

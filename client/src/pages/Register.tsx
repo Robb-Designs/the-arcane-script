@@ -84,7 +84,7 @@ function Register() {
       <div className="absolute inset-0 bg-black/75" />
 
       <div className="relative z-10 w-full max-w-md flex flex-col gap-6">
-        <div>
+        <div className="flex flex-col gap-2">
           <h1 className="text-center font-bold text-white text-4xl md:text-5xl">
             Begin Your Journey
           </h1>
@@ -141,7 +141,7 @@ function Register() {
           </Button>
 
           <p className="text-center text-sm text-slate-300">
-            Already have an account?
+            Already have an account? Login
           </p>
         </form>
       </div>
