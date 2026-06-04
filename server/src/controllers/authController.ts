@@ -50,6 +50,7 @@ async function registerUser(req: Request, res: Response) {
 }
 
 async function loginUser(req: Request, res: Response) {
+    console.log("LOGIN BODY:", req.body); //DEBUGGING
     try {
         const { email, password } = req.body;
 
