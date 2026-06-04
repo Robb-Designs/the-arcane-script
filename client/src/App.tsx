@@ -4,6 +4,7 @@ import LandingPage from './pages/LandingPage';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Profile from "./pages/Profile";
+import Battle from "./pages/Battle";
 
 function App() {
 
@@ -16,6 +17,8 @@ function App() {
       <Route path="/login" element={<Login />} />
 
       <Route path="/profile" element={<Profile />} />
+
+      <Route path="/battle" element={<Battle />} />
     </Routes>
   )
 }
