@@ -23,7 +23,44 @@ function Login() {
     });
   };
 
-  return <div>Login</div>;
+  return (
+    <div className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
+      {/* Background */}
+      <img
+        src={heroImage}
+        alt=""
+        className="absolute inset-0 h-full w-full object-cover"
+      />
+
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/75" />
+
+      {/* Content */}
+      <div className="relative z-10 w-full max-w-md flex flex-col gap-6">
+        <h1 className="text-center font-bold text-white text-4xl md:text-5xl">
+          Welcome Back
+        </h1>
+
+        <p className="text-center text-slate-300">
+          Continue your journey through the Arcane Script.
+        </p>
+
+        <form
+          className="
+          flex
+          flex-col
+          gap-4
+          rounded-lg
+          border
+          border-white/10
+          bg-black/45
+          backdrop-blur-sm
+          p-6
+        "
+        ></form>
+      </div>
+    </div>
+  );
 }
 
 export default Login;
