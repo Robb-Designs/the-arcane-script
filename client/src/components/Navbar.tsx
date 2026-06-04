@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "./ui/8bit/button";
 
 function Navbar() {
@@ -8,11 +9,11 @@ function Navbar() {
       <ul className="flex items-center gap-6 text-sm">
         {/* Auth links will go here */}
         <li>
-          <Button variant="ghost">Login</Button>
+          <Link to="/login"><Button variant="ghost">Login</Button></Link>
         </li>
 
         <li>
-          <Button>Register</Button>
+          <Link to="/register"><Button>Register</Button></Link>
         </li>
       </ul>
     </nav>

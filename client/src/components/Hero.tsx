@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "./ui/8bit/button";
 import heroImage from "@/assets/images/hero-background.webp";
 
@@ -59,11 +60,15 @@ function Hero() {
         </p>
 
         <div className="flex gap-4">
-          <Button size="lg">Begin Journey</Button>
+          <Link to="/register">
+            <Button size="lg">Begin Journey</Button>
+          </Link>
 
-          <Button variant="outline" size="lg">
-            Login
-          </Button>
+          <Link to="/login">
+            <Button variant="outline" size="lg">
+              Login
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
