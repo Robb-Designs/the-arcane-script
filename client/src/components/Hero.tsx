@@ -1,17 +1,70 @@
 import { Button } from "./ui/8bit/button";
+import heroImage from "@/assets/images/hero-background.webp";
 
 function Hero() {
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center text-center px-6">
-      <h1 className="text-6xl font-bold mb-4">The Arcane Script</h1>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background */}
+      <img
+        src={heroImage}
+        alt=""
+        className=" absolute inset-0 h-full w-full object-cover"
+      />
 
-      <p className="text-xl max-w-2xl mb-8">
-        Battle mystical enemies through the power of typing.
-      </p>
+      {/* Dark Overlay */}
+      <div
+        className="
+          absolute
+          inset-0
+          bg-black/20
+        "
+      />
 
-      <div className="flex gap-4">
-        <Button>Begin Journey</Button>
-        <Button>Login</Button>
+      {/* Content */}
+      <div
+        className="
+          relative
+          z-10
+          flex
+          flex-col
+          items-center
+          justify-center
+          text-center
+          px-6
+          w-full
+        "
+      >
+        <h1
+          className="
+            text-5xl
+            md:text-6xl
+            font-bold
+            text-white
+            mb-4
+          "
+        >
+          The Arcane Script
+        </h1>
+
+        <p
+          className="
+            max-w-xl
+            text-lg
+            md:text-xl
+            text-slate-200
+            mb-8
+          "
+        >
+          Battle mystical enemies through the power of typing.
+        </p>
+
+        <div className="flex gap-4">
+          <Button size="lg">Begin Journey</Button>
+
+          <Button variant="outline" size="lg">
+            Login
+          </Button>
+        </div>
       </div>
     </section>
   );
