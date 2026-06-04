@@ -1,16 +1,17 @@
+import { Button } from "./ui/8bit/button";
 
 function Hero() {
   return (
-    <section>
-      <h1>The Arcane Script</h1>
+    <section className="min-h-screen flex flex-col items-center justify-center text-center px-6">
+      <h1 className="text-6xl font-bold mb-4">The Arcane Script</h1>
 
-      <p>
+      <p className="text-xl max-w-2xl mb-8">
         Battle mystical enemies through the power of typing.
       </p>
 
-      <div>
-        <button>Begin Journey</button>
-        <button>Login</button>
+      <div className="flex gap-4">
+        <Button>Begin Journey</Button>
+        <Button>Login</Button>
       </div>
     </section>
   );
