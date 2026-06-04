@@ -1,5 +1,6 @@
 // Imports
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "@/config/api";
 import {
   Card,
@@ -26,7 +27,7 @@ interface ProfileData {
 function Profile() {
   //   const location = useLocation(); DEBUGGING
   //   console.log("Current Path:", location.pathname); DEBUGGING
-
+  const navigate = useNavigate();
   // Local page state for profile payload + request status.
   const [profile, setProfile] = useState<ProfileData | null>(null);
   const [error, setError] = useState("");
@@ -234,7 +235,11 @@ function Profile() {
           <CardContent>
             <div className="grid md:grid-cols-3 gap-4">
               {journeyCards.map((card) => (
-                <Card key={card.title} className="cursor-pointer transition-all hover:-translate-y-1 hover:border-amber-600 hover:bg-zinc-900/95">
+                <Card
+                  key={card.title}
+                  onClick={() => navigate(card.path)}
+                  className="cursor-pointer transition-all hover:-translate-y-1 hover:border-amber-600 hover:bg-zinc-900/95"
+                >
                   <CardHeader>
                     <CardTitle>{card.title}</CardTitle>
 
