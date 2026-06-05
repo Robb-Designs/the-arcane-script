@@ -109,17 +109,28 @@ function Battle() {
     }
   };
 
+  // Handles player typing and advances to the next prompt on exact match.
   const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
 
     setTypedText(value);
 
+    // When current prompt is completed, either finish battle or move to the next prompt.
     if (value.trim() === currentPrompt.trim()) {
+      const isLastPrompt =
+        currentPromptIndex === battleData!.prompts.length - 1;
+
+      if (isLastPrompt) {
+        console.log("Battle Complete!");
+        return;
+      }
+
       setCurrentPromptIndex((prev) => prev + 1);
       setTypedText("");
     }
   };
 
+  // Active battle view (shown after startBattle succeeds).
   if (battleData) {
     return (
       <div className="relative min-h-screen overflow-hidden">
@@ -215,6 +226,7 @@ function Battle() {
     );
   }
 
+  // Pre-battle lobby view (difficulty selection).
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Background */}
