@@ -44,6 +44,7 @@ function Battle() {
   const [typedText, setTypedText] = useState("");
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
   const [enemyPromptIndex, setEnemyPromptIndex] = useState(0);
+  const [enemyHealth, setEnemyHealth] = useState(0);
   // End-of-battle outcome used to switch into result screens.
   const [battleResult, setBattleResult] = useState<"victory" | "defeat" | null>(
     null,
@@ -55,6 +56,11 @@ function Battle() {
   // Progress bars are based on completed prompts out of total prompts.
   const playerProgress = battleData
     ? (currentPromptIndex / battleData.prompts.length) * 100
+    : 0;
+
+  // Enemy HP drops as the player clears prompts.
+  const enemyHpPercent = battleData
+    ? (enemyHealth / battleData.enemy.health) * 100
     : 0;
 
   const enemyProgress = battleData
@@ -110,6 +116,7 @@ function Battle() {
       }
 
       setBattleData(data);
+      setEnemyHealth(data.enemy.health);
 
       // Temporary response logs while wiring battle flow.
       console.log(data);
@@ -163,6 +170,16 @@ function Battle() {
 
     // When current prompt is completed, either finish battle or move to the next prompt.
     if (value.trim() === currentPrompt.trim()) {
+      const damage = 20;
+      const newHealth = Math.max(0, enemyHealth - damage);
+
+      setEnemyHealth(newHealth);
+
+      if (newHealth <= 0) {
+        setBattleResult("victory");
+        return;
+      }
+
       const isLastPrompt =
         currentPromptIndex === battleData!.prompts.length - 1;
 
@@ -176,7 +193,7 @@ function Battle() {
     }
   };
 
-  // Full-screen win overlay shown when all prompts are completed.
+  // Result overlay shown after victory or defeat.
   if (battleResult) {
     return (
       <div className="fixed inset-0 bg-black flex items-center justify-center">
@@ -218,12 +235,16 @@ function Battle() {
             </CardHeader>
 
             <CardContent>
-              <div className="flex justify-between">
-                <p>HP: {battleData.enemy.health}</p>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Enemy HP</span>
 
-                <p>Difficulty: {battleData.enemy.difficulty}</p>
+                  <span>
+                    {enemyHealth} / {battleData.enemy.health}
+                  </span>
+                </div>
 
-                <p>Arena: {battleData.enemy.arena}</p>
+                <Progress value={enemyHpPercent} />
               </div>
 
               <div className="mt-4">
