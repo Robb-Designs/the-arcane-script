@@ -11,12 +11,31 @@ import {
   CardTitle,
 } from "@/components/ui/8bit/card";
 
+import arenaImage from "@/assets/images/arena-1.webp";
 import profileImage from "@/assets/images/profile-background.webp";
+
+// Interface
+interface EnemyData {
+  id: string;
+  name: string;
+  difficulty: string;
+  baseWpm: number;
+  health: number;
+  introText: string;
+  arena: string;
+}
+
+interface BattleData {
+  battleId: string;
+  enemy: EnemyData;
+  prompts: string[];
+}
 
 function Battle() {
   // Tracks request state while creating a battle session.
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [battleData, setBattleData] = useState<BattleData | null>(null);
 
   // Preset battle tiers displayed as selectable cards.
   const difficulties = [
@@ -63,6 +82,8 @@ function Battle() {
         throw new Error(data.message);
       }
 
+      setBattleData(data);
+
       // Temporary response logs while wiring battle flow.
       console.log(data);
       console.log("Battle Started");
@@ -79,6 +100,92 @@ function Battle() {
       setIsLoading(false);
     }
   };
+
+  if (battleData) {
+    return (
+      <div className="relative min-h-screen overflow-hidden">
+        {/* Background */}
+        <img
+          src={arenaImage}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+
+        <div className="absolute inset-0 bg-black/65" />
+
+        <div className="relative z-10 max-w-5xl mx-auto px-6 py-12">
+          {/* Enemy HUD */}
+          <Card className="bg-black/70">
+            <CardHeader>
+              <CardTitle className="text-4xl">
+                {battleData.enemy.name}
+              </CardTitle>
+
+              
+            </CardHeader>
+
+            <CardContent>
+              <div className="flex justify-between">
+                <p>HP: {battleData.enemy.health}</p>
+
+                <p>Difficulty: {battleData.enemy.difficulty}</p>
+
+                <p>Arena: {battleData.enemy.arena}</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Arena Space */}
+          <div className="h-90 flex items-center justify-center">
+            <div className="text-center">
+              <h2 className="text-5xl text-amber-300">
+                {battleData.enemy.name}
+              </h2>
+
+              <p className="text-slate-400 mt-2">Enemy sprite coming soon</p>
+            </div>
+          </div>
+
+          {/* Typing Panel */}
+          <Card className="bg-black/80">
+            <CardHeader>
+              <CardTitle>Type The Incantation</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <p className="text-xl">{battleData.prompts[0]}</p>
+            </CardContent>
+          </Card>
+
+          {/* Player Stats */}
+          <Card className="mt-4 bg-black/80">
+            <CardHeader>
+              <CardTitle>Scholar Statistics</CardTitle>
+            </CardHeader>
+
+            <CardContent>
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <p>HP</p>
+                  <p>100</p>
+                </div>
+
+                <div>
+                  <p>WPM</p>
+                  <p>0</p>
+                </div>
+
+                <div>
+                  <p>Accuracy</p>
+                  <p>100%</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen overflow-hidden">
