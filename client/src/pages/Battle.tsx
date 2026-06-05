@@ -22,6 +22,8 @@ interface EnemyData {
   baseWpm: number;
   health: number;
   introText: string;
+  defeatText: string;
+  victoryText: string;
   arena: string;
 }
 
@@ -135,13 +137,19 @@ function Battle() {
   };
 
   // Full-screen win overlay shown when all prompts are completed.
-  if (battleResult === "victory") {
+  if (battleResult) {
     return (
       <div className="fixed inset-0 bg-black flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-7xl text-amber-300 mb-4">VICTORY</h1>
+          <h1 className="text-7xl text-amber-300 mb-4">
+            {battleResult === "victory" ? "VICTORY" : "DEFEAT"}
+          </h1>
 
-          <p className="text-slate-300">You have defeated your opponent.</p>
+          <p className="text-slate-300 max-w-2xl mx-auto">
+            {battleResult === "victory"
+              ? battleData?.enemy.defeatText
+              : battleData?.enemy.victoryText}
+          </p>
         </div>
       </div>
     );
