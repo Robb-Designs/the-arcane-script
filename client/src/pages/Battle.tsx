@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/8bit/button";
 import arenaImage from "@/assets/images/arena-1.webp";
 import profileImage from "@/assets/images/profile-background.webp";
 import { enemySprites } from "@/data/enemySprites";
+import "@/components/ui/8bit/styles/retro.css";
 
 // Interface
 interface EnemyData {
@@ -312,7 +313,7 @@ function Battle() {
           <div className=" fixed inset-0 z-50 bg-black flex items-center justify-center px-6">
             <div className=" max-w-3xl text-center animate-in fade-in duration-1000">
               {showIntroText && (
-                <p className="text-3xl text-amber-200 leading-relaxed animate-in fade-in duration-1000">
+                <p className="retro text-3xl text-amber-200 leading-relaxed animate-in fade-in duration-1000">
                   {battleData!.enemy.introText}
                 </p>
               )}

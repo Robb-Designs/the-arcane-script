@@ -4,6 +4,7 @@ import { useState } from "react";
 import { API_BASE_URL } from "@/config/api";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Button } from "@/components/ui/8bit/button";
+import { Card, CardContent } from "@/components/ui/8bit/card";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/images/hero-background.webp";
 import "@/components/ui/8bit/styles/retro.css";
@@ -112,52 +113,43 @@ function Login() {
           </p>
         </div>
 
-        <form
-          className="
-          flex
-          flex-col
-          gap-4
-          rounded-lg
-          border
-          border-white/10
-          bg-black/45
-          backdrop-blur-sm
-          p-6
-        "
-          onSubmit={handleSubmit}
-        >
-          {/* Login inputs */}
-          <Input
-            name="email"
-            type="email"
-            value={formData.email}
-            placeholder="Email"
-            onChange={handleChange}
-            required
-          />
+        <Card className="bg-black/80">
+          <CardContent>
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+              {/* Login inputs */}
+              <Input
+                name="email"
+                type="email"
+                value={formData.email}
+                placeholder="Email"
+                onChange={handleChange}
+                required
+              />
 
-          <Input
-            name="password"
-            type="password"
-            value={formData.password}
-            placeholder="Password"
-            onChange={handleChange}
-            required
-          />
+              <Input
+                name="password"
+                type="password"
+                value={formData.password}
+                placeholder="Password"
+                onChange={handleChange}
+                required
+              />
 
-          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+              {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Entering Realm..." : "Enter The Realm"}
-          </Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? "Entering Realm..." : "Enter The Realm"}
+              </Button>
 
-          <p className="text-center text-sm text-slate-300">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-blue-400 hover:text-blue-300">
-              Register
-            </Link>
-          </p>
-        </form>
+              <p className="text-center text-sm text-slate-300">
+                Don't have an account?{" "}
+                <Link to="/register" className="text-blue-400 hover:text-blue-300">
+                  Register
+                </Link>
+              </p>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

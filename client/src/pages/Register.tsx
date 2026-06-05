@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { API_BASE_URL } from "@/config/api";
 import { Button } from "@/components/ui/8bit/button";
+import { Card, CardContent } from "@/components/ui/8bit/card";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/images/hero-background.webp";
 import "@/components/ui/8bit/styles/retro.css";
@@ -98,58 +99,59 @@ function Register() {
         </div>
 
         {/* Registration form */}
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col gap-4 w-full max-w-md rounded-lg border border-white/10 bg-black/45 backdrop-blur-sm p-6"
-        >
-          <Input
-            name="username"
-            value={formData.username}
-            placeholder="Username"
-            onChange={handleChange}
-            required
-          />
+        <Card className="bg-black/80">
+          <CardContent>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md">
+              <Input
+                name="username"
+                value={formData.username}
+                placeholder="Username"
+                onChange={handleChange}
+                required
+              />
 
-          <Input
-            name="email"
-            type="email"
-            value={formData.email}
-            placeholder="Email"
-            onChange={handleChange}
-            required
-          />
+              <Input
+                name="email"
+                type="email"
+                value={formData.email}
+                placeholder="Email"
+                onChange={handleChange}
+                required
+              />
 
-          <Input
-            name="password"
-            type="password"
-            value={formData.password}
-            placeholder="Password"
-            onChange={handleChange}
-            required
-          />
+              <Input
+                name="password"
+                type="password"
+                value={formData.password}
+                placeholder="Password"
+                onChange={handleChange}
+                required
+              />
 
-          <Input
-            name="confirmPassword"
-            type="password"
-            value={formData.confirmPassword}
-            placeholder="Confirm Password"
-            onChange={handleChange}
-            required
-          />
+              <Input
+                name="confirmPassword"
+                type="password"
+                value={formData.confirmPassword}
+                placeholder="Confirm Password"
+                onChange={handleChange}
+                required
+              />
 
-          {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+              {error && <p className="text-red-400 text-sm text-center">{error}</p>}
 
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Creating Account..." : "Begin Adventure"}
-          </Button>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? "Creating Account..." : "Begin Adventure"}
+              </Button>
 
-          <p className="text-center text-sm text-slate-300">
-            Already have an account?{" "}
-            <Link to="/login" className="text-blue-400 hover:text-blue-300">
-              Login
-            </Link>
-          </p>
-        </form>
+              <p className="text-center text-sm text-slate-300">
+                Already have an account?{" "}
+                <Link to="/login" className="text-blue-400 hover:text-blue-300">
+                  Login
+                </Link>
+              </p>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
