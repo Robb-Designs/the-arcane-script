@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/8bit/card";
 import profileImage from "@/assets/images/profile-background.webp";
 import playerImage from "@/assets/images/player.png";
+import { Button } from "@/components/ui/8bit/button";
 
 // import { useLocation } from "react-router-dom";  DEBUGGING
 
@@ -87,6 +88,12 @@ function Profile() {
   if (!profile) {
     return <div>No profile found</div>;
   }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+
+    navigate("/login");
+  };
 
   // Card config used to render the stat grid.
   const statCards = [
@@ -248,6 +255,20 @@ function Profile() {
                 </Card>
               ))}
             </div>
+          </CardContent>
+        </Card>
+
+        <Card className="mt-8 bg-black/60">
+          <CardHeader>
+            <CardTitle>Account</CardTitle>
+
+            <CardDescription>End your current session.</CardDescription>
+          </CardHeader>
+
+          <CardContent className="flex justify-center">
+            <Button onClick={handleLogout} variant="destructive">
+              Logout
+            </Button>
           </CardContent>
         </Card>
       </div>
