@@ -1,7 +1,7 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { API_BASE_URL } from "@/config/api";
+import { apiUrl, getApiErrorMessage, parseApiResponse } from "@/config/api";
 import LoadingScreen from "@/components/LoadingScreen";
 import { Button } from "@/components/ui/8bit/button";
 import { Card, CardContent } from "@/components/ui/8bit/card";
@@ -41,7 +41,7 @@ function Login() {
       setIsLoading(true);
 
       // Send only the fields required by the backend login route.
-      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      const response = await fetch(apiUrl("/api/auth/login"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -52,16 +52,24 @@ function Login() {
         }),
       });
 
-      const data = await response.json();
+      const data = await parseApiResponse(response);
 
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(getApiErrorMessage(response, data));
+      }
+
+      if (!data || typeof data !== "object") {
+        throw new Error("Unexpected response from server");
+      }
+
+      if (!("token" in data) || !("user" in data)) {
+        throw new Error("Invalid login response from server");
       }
 
       // Persist auth data so protected screens can use it later.
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", String((data as { token: unknown }).token));
 
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("user", JSON.stringify((data as { user: unknown }).user));
 
       setError("");
       setIsEnteringRealm(true);

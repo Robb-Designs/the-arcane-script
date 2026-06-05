@@ -1,7 +1,7 @@
 // Imports
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "@/config/api";
+import { apiUrl, getApiErrorMessage, parseApiResponse } from "@/config/api";
 
 import {
   Card,
@@ -107,7 +107,7 @@ function Battle() {
 
       const token = localStorage.getItem("token");
 
-      const response = await fetch(`${API_BASE_URL}/api/game/battle/start`, {
+      const response = await fetch(apiUrl("/api/game/battle/start"), {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -118,22 +118,24 @@ function Battle() {
         }),
       });
 
-      const data = await response.json();
+      const data = await parseApiResponse(response);
 
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(getApiErrorMessage(response, data));
       }
 
-      setBattleData(data);
-      setEnemyHealth(data.enemy.health);
+      const battlePayload = data as BattleData;
+
+      setBattleData(battlePayload);
+      setEnemyHealth(battlePayload.enemy.health);
 
       // Temporary response logs while wiring battle flow.
       console.log(data);
       // Debug logs for the battle payload.
       console.log("Battle Started");
-      console.log("Battle ID:", data.battleId);
-      console.log("Enemy:", data.enemy);
-      console.log("Prompts:", data.prompts);
+      console.log("Battle ID:", battlePayload.battleId);
+      console.log("Enemy:", battlePayload.enemy);
+      console.log("Prompts:", battlePayload.prompts);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -151,7 +153,7 @@ function Battle() {
         console.log("Saving match result:", result);
         const token = localStorage.getItem("token");
 
-        await fetch(`${API_BASE_URL}/api/results/match`, {
+        await fetch(apiUrl("/api/results/match"), {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

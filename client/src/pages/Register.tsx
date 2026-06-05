@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { API_BASE_URL } from "@/config/api";
+import { apiUrl, getApiErrorMessage, parseApiResponse } from "@/config/api";
 import { Button } from "@/components/ui/8bit/button";
 import { Card, CardContent } from "@/components/ui/8bit/card";
 import { Input } from "@/components/ui/input";
@@ -42,7 +42,7 @@ function Register() {
     try {
       setIsLoading(true);
       // Send only the fields the backend needs to create the account.
-      const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+      const response = await fetch(apiUrl("/api/auth/register"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -54,12 +54,17 @@ function Register() {
         }),
       });
 
-      const data = await response.json();
+      const data = await parseApiResponse(response);
 
       // Surface backend validation errors through the catch block.
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(getApiErrorMessage(response, data));
       }
+
+      if (!data || typeof data !== "object") {
+        throw new Error("Unexpected response from server");
+      }
+
       setError("");
       console.log(data);
     } catch (error) {
