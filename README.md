@@ -8,7 +8,7 @@ The project is split into:
 
 ## Live Deployment
 
-- Frontend (Vercel): https://the-arcane-script.vercel.app/
+- Frontend (Vercel): https://the-arcane-script-iml0mc5od-robb-dev.vercel.app/
 
 ## Project Status
 
