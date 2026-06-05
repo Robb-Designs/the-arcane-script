@@ -14,11 +14,13 @@ import { Textarea } from "@/components/ui/8bit/textarea";
 import { Progress } from "@/components/ui/8bit/progress";
 import arenaImage from "@/assets/images/arena-1.webp";
 import profileImage from "@/assets/images/profile-background.webp";
+import { enemySprites } from "@/data/enemySprites";
 
 // Interface
 interface EnemyData {
   id: string;
   name: string;
+  sprite: string;
   difficulty: string;
   baseWpm: number;
   health: number;
@@ -50,6 +52,7 @@ function Battle() {
   // Picks the prompt the player is currently typing.
   const currentPrompt = battleData?.prompts[currentPromptIndex] ?? "";
 
+  // Progress bars are based on completed prompts out of total prompts.
   const playerProgress = battleData
     ? (currentPromptIndex / battleData.prompts.length) * 100
     : 0;
@@ -127,6 +130,7 @@ function Battle() {
   };
 
   useEffect(() => {
+    // Enemy advances automatically over time; faster enemies tick quicker.
     if (!battleData || battleResult) {
       return;
     }
@@ -137,6 +141,7 @@ function Battle() {
           const next = prev + 1;
 
           if (next >= battleData.prompts.length) {
+            // Enemy finished all prompts first, so the player loses.
             setBattleResult("defeat");
             return prev;
           }
@@ -235,13 +240,15 @@ function Battle() {
 
           {/* Arena space: placeholder for the enemy sprite/scene. */}
           <div className="h-80 flex items-center justify-center">
-            <div className="text-center">
-              <h2 className="text-5xl text-amber-300">
-                {battleData.enemy.name}
-              </h2>
-
-              <p className="text-slate-400 mt-2">Enemy sprite coming soon</p>
-            </div>
+            <img
+              // Falls back to apprentice sprite if a key is missing.
+              src={
+                enemySprites[battleData.enemy.sprite] ??
+                enemySprites["apprentice-mage"]
+              }
+              alt={battleData.enemy.name}
+              className="h-64 md:h-72 object-contain pixelated"
+            />
           </div>
 
           {/* Typing panel: shows the prompt and player input field. */}
