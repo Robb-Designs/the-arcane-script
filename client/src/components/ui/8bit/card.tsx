@@ -8,7 +8,7 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       className={cn(
-        "retro relative border-2 border-amber-300/90 bg-zinc-900/90 text-amber-50 shadow-[4px_4px_0px_rgba(251,191,36,0.85)] transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_rgba(251,191,36,0.85)]",
+        "retro relative border-2 border-emerald-500/85 bg-zinc-900/90 text-amber-50 shadow-[4px_4px_0px_rgba(34,197,94,0.55)] transition-transform duration-150 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_rgba(34,197,94,0.55)]",
         className
       )}
       {...props}
@@ -28,7 +28,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("px-4 pt-4 md:px-5 md:pt-5 pb-2 border-b border-amber-300/30", className)}
+      className={cn("px-4 pt-4 md:px-5 md:pt-5 pb-2 border-b border-emerald-400/30", className)}
       {...props}
     />
   );
@@ -55,7 +55,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"p">) {
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("px-4 pb-4 md:px-5 md:pb-5 pt-2 border-t border-amber-300/30", className)}
+      className={cn("px-4 pb-4 md:px-5 md:pb-5 pt-2 border-t border-emerald-400/30", className)}
       {...props}
     />
   );

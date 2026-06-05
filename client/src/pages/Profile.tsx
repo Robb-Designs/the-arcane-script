@@ -249,7 +249,7 @@ function Profile() {
                 <Card
                   key={card.title}
                   onClick={() => navigate(card.path)}
-                  className="cursor-pointer transition-all hover:-translate-y-1 hover:border-amber-600 hover:bg-zinc-900/95"
+                  className="cursor-pointer transition-all hover:-translate-y-1 hover:border-emerald-600 hover:bg-zinc-900/95"
                 >
                   <CardHeader>
                     <CardTitle>{card.title}</CardTitle>

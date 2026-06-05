@@ -84,10 +84,13 @@ async function startBattle(req: AuthRequest, res: Response) {
             enemy: {
                 id: enemy._id,
                 name: enemy.name,
+                sprite: enemy.sprite,
                 difficulty: enemy.difficulty,
                 baseWpm: enemy.baseWpm,
                 health: enemy.health,
                 introText: enemy.introText,
+                defeatText: enemy.defeatText,
+                victoryText: enemy.victoryText,
                 arena: enemy.arena
             },
 

@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 // Interface
 interface IEnemy {
     name: string;
+    sprite: string;
     difficulty: 'novice' | 'adept' | 'master';
     arena: string;
     baseWpm: number;
@@ -19,6 +20,7 @@ interface IEnemy {
 // Enemy schema model
 const enemySchema = new mongoose.Schema<IEnemy>({
     name: { type: String, required: true },
+    sprite: {type: String, required: true},
     difficulty: { type: String, enum: ['novice', 'adept', 'master'], required: true },
     arena: {type: String, required: true},
     baseWpm: { type: Number, required: true },
