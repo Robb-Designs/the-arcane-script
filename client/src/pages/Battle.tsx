@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/8bit/card";
-
+import { Textarea } from "@/components/ui/8bit/textarea";
 import arenaImage from "@/assets/images/arena-1.webp";
 import profileImage from "@/assets/images/profile-background.webp";
 
@@ -36,6 +36,10 @@ function Battle() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [battleData, setBattleData] = useState<BattleData | null>(null);
+  const [typedText, setTypedText] = useState("");
+  const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
+
+  const currentPrompt = battleData?.prompts[currentPromptIndex] ?? "";
 
   // Preset battle tiers displayed as selectable cards.
   const difficulties = [
@@ -120,8 +124,6 @@ function Battle() {
               <CardTitle className="text-4xl">
                 {battleData.enemy.name}
               </CardTitle>
-
-              
             </CardHeader>
 
             <CardContent>
@@ -136,7 +138,7 @@ function Battle() {
           </Card>
 
           {/* Arena Space */}
-          <div className="h-90 flex items-center justify-center">
+          <div className="h-80 flex items-center justify-center">
             <div className="text-center">
               <h2 className="text-5xl text-amber-300">
                 {battleData.enemy.name}
@@ -153,7 +155,16 @@ function Battle() {
             </CardHeader>
 
             <CardContent>
-              <p className="text-xl">{battleData.prompts[0]}</p>
+              <p className="text-xl leading-relaxed text-amber-100">
+                {currentPrompt}
+              </p>
+              <Textarea
+                value={typedText}
+                onChange={(e) => setTypedText(e.target.value)}
+                placeholder="Script here..."
+                className="mt-2 border-amber-100"
+              />
+              <p className="mt-2 text-xs text-slate-400">Characters Typed: {typedText.length}</p>
             </CardContent>
           </Card>
 
