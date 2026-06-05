@@ -4,6 +4,7 @@ import { API_BASE_URL } from "@/config/api";
 import { Button } from "@/components/ui/8bit/button";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/images/hero-background.webp";
+import "@/components/ui/8bit/styles/retro.css";
 
 function Register() {
   // Store all form fields in one state object.
@@ -87,11 +88,11 @@ function Register() {
 
       <div className="relative z-10 w-full max-w-md flex flex-col gap-6">
         <div className="flex flex-col gap-2">
-          <h1 className="text-center font-bold text-white text-4xl md:text-5xl">
+          <h1 className="text-center font-bold retro text-white text-4xl md:text-5xl">
             Begin Your Journey
           </h1>
 
-          <p className="text-center text-slate-300">
+          <p className="text-center retro text-slate-300">
             Create your adventurer and begin your journey.
           </p>
         </div>
