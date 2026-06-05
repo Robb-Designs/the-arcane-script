@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/8bit/card";
+import LoadingScreen from "@/components/LoadingScreen";
 import profileImage from "@/assets/images/profile-background.webp";
 import playerImage from "@/assets/images/player.png";
 import { Button } from "@/components/ui/8bit/button";
@@ -78,7 +79,7 @@ function Profile() {
 
   // Simple guard returns keep render logic below focused on success UI.
   if (isLoading) {
-    return <div>Loading profile...</div>;
+    return <LoadingScreen message="Retrieving guild records..." />;
   }
 
   if (error) {
@@ -164,6 +165,9 @@ function Profile() {
           gap-8
           bg-black/60
           p-6 md:p-8
+          animate-in
+          fade-in
+          duration-500
         "
         >
           {/* Character Section */}
@@ -215,7 +219,7 @@ function Profile() {
         </Card>
 
         {/* Match History Placeholder */}
-        <Card className="mt-8 bg-black/60">
+        <Card className="mt-8 bg-black/60 animate-in fade-in duration-700">
           <CardHeader>
             <CardTitle>Recent Battles</CardTitle>
             <CardDescription>Your latest arena encounters</CardDescription>
@@ -233,7 +237,7 @@ function Profile() {
         </Card>
 
         {/* Activity shortcuts for future navigation hooks. */}
-        <Card className="mt-8 bg-black/60">
+        <Card className="mt-8 bg-black/60 animate-in fade-in duration-1000">
           <CardHeader>
             <CardTitle>Guild Activities</CardTitle>
             <CardDescription>Choose your next path.</CardDescription>
