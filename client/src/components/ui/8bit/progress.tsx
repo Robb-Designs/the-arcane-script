@@ -27,6 +27,7 @@ export interface BitProgressProps
   className?: string;
   font?: VariantProps<typeof progressVariants>["font"];
   progressBg?: string;
+  indicatorClassName?: string;
 }
 
 function Progress({
@@ -35,6 +36,7 @@ function Progress({
   variant,
   value,
   progressBg,
+  indicatorClassName,
   ...props
 }: BitProgressProps) {
   // Extract height from className if present
@@ -47,6 +49,7 @@ function Progress({
         data-slot="progress"
         className={cn(
           "bg-primary/20 relative w-full overflow-hidden",
+          progressBg,
           heightClass,
           font !== "normal" && "retro"
         )}
@@ -58,7 +61,7 @@ function Progress({
           className={cn(
             "h-full transition-all",
             variant === "retro" ? "flex w-full" : "w-full flex-1",
-            variant !== "retro" && (progressBg || "bg-primary")
+            variant !== "retro" && (indicatorClassName || "bg-primary")
           )}
           style={
             variant === "retro"
@@ -76,8 +79,8 @@ function Progress({
                     className={cn(
                       "flex-1 h-full mx-[1px]",
                       i < filledSquares
-                        ? progressBg || "bg-primary"
-                        : "bg-transparent"
+                        ? indicatorClassName || "bg-primary"
+                        : progressBg || "bg-transparent"
                     )}
                   />
                 );

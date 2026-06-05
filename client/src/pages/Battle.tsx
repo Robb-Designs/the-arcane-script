@@ -54,9 +54,6 @@ function Battle() {
     null,
   );
 
-  const [countdown, setCountdown] = useState(3);
-  const [battleStarted, setBattleStarted] = useState(false);
-
   const [battlePhase, setBattlePhase] = useState<
     "intro" | "countdown" | "battle"
   >("intro");
@@ -204,9 +201,6 @@ function Battle() {
     }
 
     setBattlePhase("intro");
-    setBattleStarted(false);
-    setCountdown(3);
-
     const textTimer = setTimeout(() => {
       setShowIntroText(true);
     }, 1000);
@@ -397,7 +391,7 @@ function Battle() {
                 value={playerProgress}
                 variant="retro"
                 className="h-4 bg-cyan-900/80"
-                indicatorClassName="bg-cyan-300"
+                indicatorClassName="bg-cyan-200"
                 progressBg="bg-cyan-950"
               />
             </div>
