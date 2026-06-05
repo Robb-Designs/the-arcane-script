@@ -38,6 +38,10 @@ function Battle() {
   const [battleData, setBattleData] = useState<BattleData | null>(null);
   const [typedText, setTypedText] = useState("");
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
+  // End-of-battle outcome used to switch into result screens.
+  const [battleResult, setBattleResult] = useState<"victory" | "defeat" | null>(
+    null,
+  );
 
   // Picks the prompt the player is currently typing.
   const currentPrompt = battleData?.prompts[currentPromptIndex] ?? "";
@@ -64,7 +68,7 @@ function Battle() {
   // Starts a new battle session on the server for the selected difficulty.
   const startBattle = async (difficulty: "novice" | "adept" | "master") => {
     try {
-      // Reset previous errors and lock UI while request is running.
+      // Reset previous run data and lock UI while request is running.
       setError("");
       setTypedText("");
       setCurrentPromptIndex(0);
@@ -121,7 +125,7 @@ function Battle() {
         currentPromptIndex === battleData!.prompts.length - 1;
 
       if (isLastPrompt) {
-        console.log("Battle Complete!");
+        setBattleResult("victory");
         return;
       }
 
@@ -129,6 +133,19 @@ function Battle() {
       setTypedText("");
     }
   };
+
+  // Full-screen win overlay shown when all prompts are completed.
+  if (battleResult === "victory") {
+    return (
+      <div className="fixed inset-0 bg-black flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-7xl text-amber-300 mb-4">VICTORY</h1>
+
+          <p className="text-slate-300">You have defeated your opponent.</p>
+        </div>
+      </div>
+    );
+  }
 
   // Active battle view (shown after startBattle succeeds).
   if (battleData) {
