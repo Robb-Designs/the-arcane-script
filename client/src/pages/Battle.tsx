@@ -53,6 +53,14 @@ function Battle() {
     null,
   );
 
+  const [countdown, setCountdown] = useState(3);
+  const [battleStarted, setBattleStarted] = useState(false);
+
+  const [battlePhase, setBattlePhase] = useState<
+    "intro" | "countdown" | "battle"
+  >("intro");
+  const [showIntroText, setShowIntroText] = useState(false);
+
   // Picks the prompt the player is currently typing.
   const currentPrompt = battleData?.prompts[currentPromptIndex] ?? "";
 
@@ -189,6 +197,30 @@ function Battle() {
     return () => clearInterval(interval);
   }, [battleData, battleResult]);
 
+  useEffect(() => {
+    if (!battleData) {
+      return;
+    }
+
+    setBattlePhase("intro");
+    setBattleStarted(false);
+    setCountdown(3);
+
+    const textTimer = setTimeout(() => {
+      setShowIntroText(true);
+    }, 1000);
+
+    const introTimer = setTimeout(() => {
+      setBattlePhase("countdown");
+    }, 4000);
+
+    return () => {
+      clearTimeout(textTimer);
+      clearTimeout(introTimer);
+    };
+  }, [battleData]);
+  console.log(battlePhase);
+
   // Handles player typing and advances to the next prompt on exact match.
   const handleTyping = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -276,12 +308,24 @@ function Battle() {
 
         <div className="absolute inset-0 bg-black/65" />
 
+        {battlePhase === "intro" && (
+          <div className=" fixed inset-0 z-50 bg-black flex items-center justify-center px-6">
+            <div className=" max-w-3xl text-center animate-in fade-in duration-1000">
+              {showIntroText && (
+                <p className="text-3xl text-amber-200 leading-relaxed animate-in fade-in duration-1000">
+                  {battleData!.enemy.introText}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="relative z-10 max-w-5xl mx-auto px-6 py-12">
           {/* Enemy HUD: shows the enemy name and battle info. */}
           <Card className="bg-black/70">
             <CardHeader>
               <CardTitle className="text-4xl">
-                {battleData.enemy.name}
+                {battleData!.enemy.name}
               </CardTitle>
             </CardHeader>
 
@@ -291,7 +335,7 @@ function Battle() {
                   <span>Enemy HP</span>
 
                   <span>
-                    {enemyHealth} / {battleData.enemy.health}
+                    {enemyHealth} / {battleData!.enemy.health}
                   </span>
                 </div>
 
@@ -315,10 +359,10 @@ function Battle() {
             <img
               // Falls back to apprentice sprite if a key is missing.
               src={
-                enemySprites[battleData.enemy.sprite] ??
+                enemySprites[battleData!.enemy.sprite] ??
                 enemySprites["apprentice-mage"]
               }
-              alt={battleData.enemy.name}
+              alt={battleData!.enemy.name}
               className="h-64 md:h-72 object-contain pixelated"
             />
           </div>

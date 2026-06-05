@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { API_BASE_URL } from "@/config/api";
+import LoadingScreen from "@/components/LoadingScreen";
 import { Button } from "@/components/ui/8bit/button";
 import { Input } from "@/components/ui/input";
 import heroImage from "@/assets/images/hero-background.webp";
@@ -16,6 +18,8 @@ function Login() {
   const [error, setError] = useState("");
   // Track submit/loading state for button and request flow.
   const [isLoading, setIsLoading] = useState(false);
+  const [isEnteringRealm, setIsEnteringRealm] = useState(false);
+  const navigate = useNavigate();
 
   // Update the field that matches the input name attribute.
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +62,11 @@ function Login() {
       localStorage.setItem("user", JSON.stringify(data.user));
 
       setError("");
+      setIsEnteringRealm(true);
+
+      setTimeout(() => {
+        navigate("/profile");
+      }, 1500);
 
       console.log(data);
     } catch (error) {
@@ -72,6 +81,10 @@ function Login() {
       setIsLoading(false);
     }
   };
+
+  if (isEnteringRealm) {
+    return <LoadingScreen message="Entering the guild halls..." />;
+  }
 
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden">
