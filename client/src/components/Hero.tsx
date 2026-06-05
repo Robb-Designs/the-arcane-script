@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "./ui/8bit/button";
 import heroImage from "@/assets/images/hero-background.webp";
+import "@/components/ui/8bit/styles/retro.css";
 
 function Hero() {
   return (
@@ -40,6 +41,7 @@ function Hero() {
             text-5xl
             md:text-6xl
             font-bold
+            retro
             text-white
             mb-4
           "
@@ -52,6 +54,7 @@ function Hero() {
             max-w-xl
             text-lg
             md:text-xl
+            retro
             text-slate-200
             mb-8
           "

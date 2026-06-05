@@ -339,7 +339,13 @@ function Battle() {
                   </span>
                 </div>
 
-                <Progress value={enemyHpPercent} />
+                <Progress
+                  value={enemyHpPercent}
+                  variant="retro"
+                  className="h-4 bg-amber-900/80"
+                  indicatorClassName="bg-amber-300"
+                  progressBg="bg-amber-950"
+                />
               </div>
 
               <div className="mt-4">
@@ -349,7 +355,13 @@ function Battle() {
                   <span>{Math.floor(enemyProgress)}%</span>
                 </div>
 
-                <Progress value={enemyProgress} />
+                <Progress
+                  value={enemyProgress}
+                  variant="retro"
+                  className="h-4 bg-rose-900/80"
+                  indicatorClassName="bg-rose-300"
+                  progressBg="bg-rose-950"
+                />
               </div>
             </CardContent>
           </Card>
@@ -380,7 +392,13 @@ function Battle() {
                 <span>{Math.floor(playerProgress)}%</span>
               </div>
 
-              <Progress value={playerProgress} />
+              <Progress
+                value={playerProgress}
+                variant="retro"
+                className="h-4 bg-cyan-900/80"
+                indicatorClassName="bg-cyan-300"
+                progressBg="bg-cyan-950"
+              />
             </div>
 
             <CardContent>
