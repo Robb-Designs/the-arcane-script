@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/8bit/card";
 import { Textarea } from "@/components/ui/8bit/textarea";
+import { Progress } from "@/components/ui/8bit/progress";
 import arenaImage from "@/assets/images/arena-1.webp";
 import profileImage from "@/assets/images/profile-background.webp";
 
@@ -48,6 +49,14 @@ function Battle() {
 
   // Picks the prompt the player is currently typing.
   const currentPrompt = battleData?.prompts[currentPromptIndex] ?? "";
+
+  const playerProgress = battleData
+    ? (currentPromptIndex / battleData.prompts.length) * 100
+    : 0;
+
+  const enemyProgress = battleData
+    ? (enemyPromptIndex / battleData.prompts.length) * 100
+    : 0;
 
   // Preset battle tiers displayed as selectable cards.
   const difficulties = [
@@ -121,22 +130,22 @@ function Battle() {
     if (!battleData || battleResult) {
       return;
     }
-console.log(
-  "Enemy WPM:",
-  battleData.enemy.baseWpm
-);
-    const interval = setInterval(() => {
-      setEnemyPromptIndex((prev) => {
-        const next = prev + 1;
+    console.log("Enemy WPM:", battleData.enemy.baseWpm);
+    const interval = setInterval(
+      () => {
+        setEnemyPromptIndex((prev) => {
+          const next = prev + 1;
 
-        if (next >= battleData.prompts.length) {
-          setBattleResult("defeat");
-          return prev;
-        }
+          if (next >= battleData.prompts.length) {
+            setBattleResult("defeat");
+            return prev;
+          }
 
-        return next;
-      });
-    }, Math.max(1500, 8000 - battleData.enemy.baseWpm * 100));
+          return next;
+        });
+      },
+      Math.max(1500, 8000 - battleData.enemy.baseWpm * 100),
+    );
 
     return () => clearInterval(interval);
   }, [battleData, battleResult]);
@@ -211,6 +220,16 @@ console.log(
 
                 <p>Arena: {battleData.enemy.arena}</p>
               </div>
+
+              <div className="mt-4">
+                <div className="flex justify-between mb-2">
+                  <span>Enemy Casting</span>
+
+                  <span>{Math.floor(enemyProgress)}%</span>
+                </div>
+
+                <Progress value={enemyProgress} />
+              </div>
             </CardContent>
           </Card>
 
@@ -230,6 +249,16 @@ console.log(
             <CardHeader>
               <CardTitle>Type The Incantation</CardTitle>
             </CardHeader>
+
+            <div className="mb-4">
+              <div className="flex justify-between mb-2">
+                <span>Scholar Casting</span>
+
+                <span>{Math.floor(playerProgress)}%</span>
+              </div>
+
+              <Progress value={playerProgress} />
+            </div>
 
             <CardContent>
               <p className="text-xl leading-relaxed text-amber-100">
@@ -269,18 +298,6 @@ console.log(
                   <p>Accuracy</p>
                   <p>100%</p>
                 </div>
-              </div>
-
-              <div className="mt-4 space-y-2">
-                <p>
-                  Player Progress: {currentPromptIndex} /{" "}
-                  {battleData.prompts.length}
-                </p>
-
-                <p>
-                  Enemy Progress: {enemyPromptIndex} /{" "}
-                  {battleData.prompts.length}
-                </p>
               </div>
             </CardContent>
           </Card>
