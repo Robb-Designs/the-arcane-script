@@ -6,18 +6,30 @@ The project is split into:
 - Client: React + Vite + TypeScript + Tailwind/8bit UI
 - Server: Node.js + Express + TypeScript + MongoDB
 
+## Live Deployment
+
+- Frontend (Vercel): https://the-arcane-script.vercel.app/
+
+## Project Status
+
+This project is in active, ongoing development.
+
+Features, balancing, UI polish, and backend improvements are being continuously updated, so behavior and visuals may change between releases.
+
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
-2. [Tech Stack](#tech-stack)
-3. [Repository Structure](#repository-structure)
-4. [Prerequisites](#prerequisites)
-5. [Environment Variables](#environment-variables)
-6. [Local Development](#local-development)
-7. [Build and Production Run](#build-and-production-run)
-8. [API Surface Summary](#api-surface-summary)
-9. [Deployment Guide](#deployment-guide)
-10. [Troubleshooting](#troubleshooting)
+2. [Live Deployment](#live-deployment)
+3. [Project Status](#project-status)
+4. [Tech Stack](#tech-stack)
+5. [Repository Structure](#repository-structure)
+6. [Prerequisites](#prerequisites)
+7. [Environment Variables](#environment-variables)
+8. [Local Development](#local-development)
+9. [Build and Production Run](#build-and-production-run)
+10. [API Surface Summary](#api-surface-summary)
+11. [Deployment Guide](#deployment-guide)
+12. [Troubleshooting](#troubleshooting)
 
 ## Project Overview
 
