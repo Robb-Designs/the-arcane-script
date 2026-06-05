@@ -1,5 +1,6 @@
 // Imports
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "@/config/api";
 
 import {
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/8bit/card";
 import { Textarea } from "@/components/ui/8bit/textarea";
 import { Progress } from "@/components/ui/8bit/progress";
+import { Button } from "@/components/ui/8bit/button";
 import arenaImage from "@/assets/images/arena-1.webp";
 import profileImage from "@/assets/images/profile-background.webp";
 import { enemySprites } from "@/data/enemySprites";
@@ -41,6 +43,7 @@ function Battle() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [battleData, setBattleData] = useState<BattleData | null>(null);
+  const navigate = useNavigate();
   const [typedText, setTypedText] = useState("");
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
   const [enemyPromptIndex, setEnemyPromptIndex] = useState(0);
@@ -136,6 +139,29 @@ function Battle() {
     }
   };
 
+  const saveMatchResult = async (result: "win" | "loss") => {
+    try {
+      console.log("Saving match result:", result);
+      const token = localStorage.getItem("token");
+
+      await fetch(`${API_BASE_URL}/api/results/match`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          battleId: battleData?.battleId,
+          result,
+          wpm: 0,
+          accuracy: 100,
+        }),
+      });
+    } catch (error) {
+      console.error("Match save failed:", error);
+    }
+  };
+
   useEffect(() => {
     // Enemy advances automatically over time; faster enemies tick quicker.
     if (!battleData || battleResult) {
@@ -148,6 +174,7 @@ function Battle() {
           const next = prev + 1;
 
           if (next >= battleData.prompts.length) {
+            saveMatchResult("loss");
             // Enemy finished all prompts first, so the player loses.
             setBattleResult("defeat");
             return prev;
@@ -163,7 +190,7 @@ function Battle() {
   }, [battleData, battleResult]);
 
   // Handles player typing and advances to the next prompt on exact match.
-  const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTyping = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
 
     setTypedText(value);
@@ -176,6 +203,8 @@ function Battle() {
       setEnemyHealth(newHealth);
 
       if (newHealth <= 0) {
+        await saveMatchResult("win");
+
         setBattleResult("victory");
         return;
       }
@@ -196,17 +225,39 @@ function Battle() {
   // Result overlay shown after victory or defeat.
   if (battleResult) {
     return (
-      <div className="fixed inset-0 bg-black flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-7xl text-amber-300 mb-4">
-            {battleResult === "victory" ? "VICTORY" : "DEFEAT"}
-          </h1>
+      <div className="fixed inset-0 bg-black flex flex-col items-center justify-center">
+        <Card className="bg-black/80 max-w-3xl p-8">
+          <CardContent className="text-center">
+            <h1 className="text-7xl text-amber-300 mb-4">
+              {battleResult === "victory" ? "VICTORY" : "DEFEAT"}
+            </h1>
 
-          <p className="text-slate-300 max-w-2xl mx-auto">
-            {battleResult === "victory"
-              ? battleData?.enemy.defeatText
-              : battleData?.enemy.victoryText}
-          </p>
+            <p className="text-slate-300 max-w-2xl mx-auto">
+              {battleResult === "victory"
+                ? battleData?.enemy.defeatText
+                : battleData?.enemy.victoryText}
+            </p>
+          </CardContent>
+        </Card>
+        <div className="mt-8 flex flex-col md:flex-row justify-center gap-4">
+          <Button onClick={() => navigate("/profile")} size="lg">
+            Return To Profile
+          </Button>
+
+          <Button
+            onClick={() => {
+              setBattleData(null);
+              setBattleResult(null);
+              setTypedText("");
+              setError("");
+              setCurrentPromptIndex(0);
+              setEnemyPromptIndex(0);
+              setEnemyHealth(0);
+            }}
+            size="lg"
+          >
+            Battle Again
+          </Button>
         </div>
       </div>
     );
