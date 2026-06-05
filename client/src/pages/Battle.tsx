@@ -1,5 +1,5 @@
 // Imports
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { API_BASE_URL } from "@/config/api";
 
 import {
@@ -40,6 +40,7 @@ function Battle() {
   const [battleData, setBattleData] = useState<BattleData | null>(null);
   const [typedText, setTypedText] = useState("");
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
+  const [enemyPromptIndex, setEnemyPromptIndex] = useState(0);
   // End-of-battle outcome used to switch into result screens.
   const [battleResult, setBattleResult] = useState<"victory" | "defeat" | null>(
     null,
@@ -74,6 +75,7 @@ function Battle() {
       setError("");
       setTypedText("");
       setCurrentPromptIndex(0);
+      setEnemyPromptIndex(0);
       setIsLoading(true);
 
       const token = localStorage.getItem("token");
@@ -114,6 +116,30 @@ function Battle() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!battleData || battleResult) {
+      return;
+    }
+console.log(
+  "Enemy WPM:",
+  battleData.enemy.baseWpm
+);
+    const interval = setInterval(() => {
+      setEnemyPromptIndex((prev) => {
+        const next = prev + 1;
+
+        if (next >= battleData.prompts.length) {
+          setBattleResult("defeat");
+          return prev;
+        }
+
+        return next;
+      });
+    }, Math.max(1500, 8000 - battleData.enemy.baseWpm * 100));
+
+    return () => clearInterval(interval);
+  }, [battleData, battleResult]);
 
   // Handles player typing and advances to the next prompt on exact match.
   const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -243,6 +269,18 @@ function Battle() {
                   <p>Accuracy</p>
                   <p>100%</p>
                 </div>
+              </div>
+
+              <div className="mt-4 space-y-2">
+                <p>
+                  Player Progress: {currentPromptIndex} /{" "}
+                  {battleData.prompts.length}
+                </p>
+
+                <p>
+                  Enemy Progress: {enemyPromptIndex} /{" "}
+                  {battleData.prompts.length}
+                </p>
               </div>
             </CardContent>
           </Card>
