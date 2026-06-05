@@ -1,5 +1,5 @@
 // Imports
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "@/config/api";
 
@@ -145,28 +145,31 @@ function Battle() {
     }
   };
 
-  const saveMatchResult = async (result: "win" | "loss") => {
-    try {
-      console.log("Saving match result:", result);
-      const token = localStorage.getItem("token");
+  const saveMatchResult = useCallback(
+    async (result: "win" | "loss") => {
+      try {
+        console.log("Saving match result:", result);
+        const token = localStorage.getItem("token");
 
-      await fetch(`${API_BASE_URL}/api/results/match`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          battleId: battleData?.battleId,
-          result,
-          wpm: 0,
-          accuracy: 100,
-        }),
-      });
-    } catch (error) {
-      console.error("Match save failed:", error);
-    }
-  };
+        await fetch(`${API_BASE_URL}/api/results/match`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            battleId: battleData?.battleId,
+            result,
+            wpm: 0,
+            accuracy: 100,
+          }),
+        });
+      } catch (error) {
+        console.error("Match save failed:", error);
+      }
+    },
+    [battleData?.battleId],
+  );
 
   useEffect(() => {
     // Enemy advances automatically over time; faster enemies tick quicker.
@@ -193,7 +196,7 @@ function Battle() {
     );
 
     return () => clearInterval(interval);
-  }, [battleData, battleResult]);
+  }, [battleData, battleResult, saveMatchResult]);
 
   useEffect(() => {
     if (!battleData) {
