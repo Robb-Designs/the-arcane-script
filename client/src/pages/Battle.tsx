@@ -39,6 +39,7 @@ function Battle() {
   const [typedText, setTypedText] = useState("");
   const [currentPromptIndex, setCurrentPromptIndex] = useState(0);
 
+  // Picks the prompt the player is currently typing.
   const currentPrompt = battleData?.prompts[currentPromptIndex] ?? "";
 
   // Preset battle tiers displayed as selectable cards.
@@ -90,6 +91,7 @@ function Battle() {
 
       // Temporary response logs while wiring battle flow.
       console.log(data);
+      // Debug logs for the battle payload.
       console.log("Battle Started");
       console.log("Battle ID:", data.battleId);
       console.log("Enemy:", data.enemy);
@@ -118,7 +120,7 @@ function Battle() {
         <div className="absolute inset-0 bg-black/65" />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 py-12">
-          {/* Enemy HUD */}
+          {/* Enemy HUD: shows the enemy name and battle info. */}
           <Card className="bg-black/70">
             <CardHeader>
               <CardTitle className="text-4xl">
@@ -137,7 +139,7 @@ function Battle() {
             </CardContent>
           </Card>
 
-          {/* Arena Space */}
+          {/* Arena space: placeholder for the enemy sprite/scene. */}
           <div className="h-80 flex items-center justify-center">
             <div className="text-center">
               <h2 className="text-5xl text-amber-300">
@@ -148,7 +150,7 @@ function Battle() {
             </div>
           </div>
 
-          {/* Typing Panel */}
+          {/* Typing panel: shows the prompt and player input field. */}
           <Card className="bg-black/80">
             <CardHeader>
               <CardTitle>Type The Incantation</CardTitle>
@@ -168,7 +170,7 @@ function Battle() {
             </CardContent>
           </Card>
 
-          {/* Player Stats */}
+          {/* Player stats: basic combat/typing info. */}
           <Card className="mt-4 bg-black/80">
             <CardHeader>
               <CardTitle>Scholar Statistics</CardTitle>
@@ -212,6 +214,7 @@ function Battle() {
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
+        {/* Difficulty selection card shown before a battle starts. */}
         <Card className="transition-all hover:-translate-y-1 hover:bg-zinc-900/95">
           <CardHeader>
             <CardTitle className="text-4xl">Choose Your Challenge</CardTitle>
