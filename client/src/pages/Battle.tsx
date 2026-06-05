@@ -66,6 +66,8 @@ function Battle() {
     try {
       // Reset previous errors and lock UI while request is running.
       setError("");
+      setTypedText("");
+      setCurrentPromptIndex(0);
       setIsLoading(true);
 
       const token = localStorage.getItem("token");
@@ -104,6 +106,17 @@ function Battle() {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleTyping = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+
+    setTypedText(value);
+
+    if (value.trim() === currentPrompt.trim()) {
+      setCurrentPromptIndex((prev) => prev + 1);
+      setTypedText("");
     }
   };
 
@@ -162,11 +175,13 @@ function Battle() {
               </p>
               <Textarea
                 value={typedText}
-                onChange={(e) => setTypedText(e.target.value)}
+                onChange={handleTyping}
                 placeholder="Script here..."
                 className="mt-2 border-amber-100"
               />
-              <p className="mt-2 text-xs text-slate-400">Characters Typed: {typedText.length}</p>
+              <p className="mt-2 text-xs text-slate-400">
+                Characters Typed: {typedText.length}
+              </p>
             </CardContent>
           </Card>
 
