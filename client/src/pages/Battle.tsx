@@ -444,6 +444,13 @@ function Battle() {
 
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-12">
+        <Card className="mb-4 bg-black/60">
+          <CardContent className="flex justify-start py-4">
+            <Button onClick={() => navigate("/profile")}>
+              ← Return To Profile
+            </Button>
+          </CardContent>
+        </Card>
         {/* Difficulty selection card shown before a battle starts. */}
         <Card className="transition-all hover:-translate-y-1 hover:bg-zinc-900/95">
           <CardHeader>
